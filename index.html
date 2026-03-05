@@ -16,9 +16,9 @@
       --shadow: 0 20px 60px rgba(0,0,0,.45);
       --radius: 18px;
 
-      --accent: #7C3AED;   /* purple */
-      --accent2:#22D3EE;   /* cyan */
-      --accent3:#A3E635;   /* lime */
+      --accent: #7C3AED;
+      --accent2:#22D3EE;
+      --accent3:#A3E635;
 
       --max: 1120px;
     }
@@ -34,7 +34,6 @@
       overflow-x:hidden;
     }
 
-    /* Фоновий wrapper щоб градієнт не “зникав” по сторінці */
     .page{
       min-height: 100vh;
       background:
@@ -46,10 +45,10 @@
     }
 
     header, section, footer, .nav { background: transparent; }
-
     a{color:inherit}
     .container{max-width:var(--max); margin:0 auto; padding:0 20px}
 
+    /* NAV */
     .nav{
       position:sticky; top:0; z-index:50;
       backdrop-filter: blur(14px);
@@ -94,6 +93,7 @@
       background: rgba(255,255,255,.06);
     }
 
+    /* BUTTONS */
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
       gap:10px;
@@ -112,7 +112,6 @@
     }
     .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.20);}
     .btn:active{transform: translateY(0px) scale(.99);}
-
     .btn-primary{
       border: 1px solid rgba(124,58,237,.45);
       background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.60));
@@ -123,6 +122,7 @@
       border-color: rgba(34,211,238,.55);
     }
 
+    /* HERO */
     .hero{ padding: 62px 0 26px; }
     .grid-hero{
       display:grid;
@@ -156,6 +156,7 @@
     .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .micro{color: var(--muted2); font-size: 13px; margin-top: 10px;}
 
+    /* CARDS */
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
       border:1px solid rgba(255,255,255,.12);
@@ -190,6 +191,7 @@
     .stat b{display:block; font-size: 15px; margin-bottom: 6px}
     .stat span{color: var(--muted2); font-size: 13px; line-height:1.4}
 
+    /* SECTIONS */
     .section{ padding: 36px 0; }
     .section h2{ font-size: 24px; margin: 0 0 14px; letter-spacing: -.3px; }
     .section p.lead{ margin: 0 0 18px; color: var(--muted); line-height: 1.6; max-width: 80ch; }
@@ -243,18 +245,14 @@
         linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
     }
 
-    /* ✅ Контакт: замість форми — кнопка на n8n лінк */
+    /* CONTACT */
     .contact{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
       gap: 14px;
       align-items: stretch;
     }
-    .mini-form{
-      display:grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
+    .mini-form{ display:grid; gap: 10px; margin-top: 10px; }
     .field{
       width:100%;
       padding: 12px 12px;
@@ -266,8 +264,116 @@
       font-size: 14px;
     }
     .field::placeholder{color: rgba(255,255,255,.45)}
-    .note{color: var(--muted2); font-size: 12.5px; line-height:1.5; margin-top:8px}
+    .form-hint{
+      color: var(--muted2);
+      font-size: 12.5px;
+      line-height: 1.5;
+      margin-top: 6px;
+    }
 
+    /* Loading state on submit */
+    #submitBtn{ position: relative; overflow: hidden; }
+    #submitBtn.is-loading{ pointer-events:none; opacity:.92; }
+    #submitBtn .btn-spinner{ width:0; height:0; margin-left:0; }
+    #submitBtn.is-loading .btn-label{ opacity:.85; }
+    #submitBtn.is-loading .btn-spinner{
+      width:16px; height:16px; margin-left:10px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.45);
+      border-top-color: rgba(255,255,255,.95);
+      animation: spin .7s linear infinite;
+      display:inline-block;
+    }
+    @keyframes spin{ to { transform: rotate(360deg); } }
+
+    /* Glass Toast */
+    .toast{
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: min(420px, calc(100vw - 44px));
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 24px 80px rgba(0,0,0,.55);
+      transform: translateY(18px) scale(.98);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .toast__glass{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(700px 240px at 10% 0%, rgba(34,211,238,.22), transparent 60%),
+        radial-gradient(700px 240px at 90% 40%, rgba(124,58,237,.22), transparent 60%),
+        rgba(255,255,255,.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .toast__content{
+      position: relative;
+      display: grid;
+      grid-template-columns: 42px 1fr 34px;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 14px 12px;
+    }
+    .toast__icon{
+      width: 42px; height: 42px;
+      border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: 18px;
+    }
+    .toast__title{ font-weight: 800; letter-spacing: -.2px; }
+    .toast__desc{
+      margin-top: 2px;
+      color: rgba(255,255,255,.75);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .toast__close{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.85);
+      cursor: pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .toast__close:hover{ background: rgba(255,255,255,.08); transform: translateY(-1px); }
+    .toast__bar{ position: relative; height: 3px; background: rgba(255,255,255,.10); }
+    .toast__bar::before{
+      content:"";
+      position:absolute; inset:0;
+      width: 100%;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, rgba(34,211,238,.9), rgba(124,58,237,.9));
+    }
+    .toast.show{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      transition: opacity .22s ease, transform .22s cubic-bezier(.2,.9,.2,1);
+    }
+    .toast.show .toast__bar::before{
+      animation: toastbar var(--toastDur, 4s) linear forwards;
+    }
+    @keyframes toastbar{ to { transform: translateX(0%); } }
+
+    @keyframes shake{
+      0%,100%{transform: translateY(0) translateX(0)}
+      20%{transform: translateY(0) translateX(-6px)}
+      40%{transform: translateY(0) translateX(6px)}
+      60%{transform: translateY(0) translateX(-4px)}
+      80%{transform: translateY(0) translateX(4px)}
+    }
+    .toast.is-error{ border-color: rgba(255,90,90,.35); }
+    .toast.is-error .toast__icon{ border-color: rgba(255,90,90,.35); }
+    .toast.is-error.show{ animation: shake .35s ease; }
+
+    /* FOOTER */
     footer{
       padding: 28px 0 40px;
       color: var(--muted2);
@@ -275,6 +381,7 @@
       margin-top: 16px;
     }
 
+    /* Responsive */
     @media (max-width: 980px){
       .grid-hero{grid-template-columns: 1fr}
       .cards{grid-template-columns: 1fr}
@@ -311,7 +418,6 @@
           <a href="#form">Зв’язок</a>
         </div>
 
-        <!-- ✅ Кнопка "зв'язатись" веде на заголовок/якір -->
         <a class="btn btn-primary" href="#form">📩 Зв’язатись</a>
       </div>
     </div>
@@ -340,6 +446,7 @@
             <a class="btn btn-primary" href="#form">📩 Зв’язатись</a>
             <a class="btn" href="#services">Переглянути послуги</a>
           </div>
+
           <div class="micro">Фокус на результаті та стабільній роботі систем.</div>
         </div>
 
@@ -355,7 +462,7 @@
           <div class="stats" aria-label="Переваги підходу">
             <div class="stat">
               <b>Системність</b>
-              <span>Не “окрема фіча”, а зв’язана архітектура процесів.</span>
+              <span>Зв’язана архітектура процесів, а не “окрема фіча”.</span>
             </div>
             <div class="stat">
               <b>Надійність</b>
@@ -363,7 +470,7 @@
             </div>
             <div class="stat">
               <b>Швидкість</b>
-              <span>Скорочення ручної роботи та часу обробки задач.</span>
+              <span>Менше ручної роботи та швидша обробка задач.</span>
             </div>
             <div class="stat">
               <b>Масштаб</b>
@@ -407,7 +514,7 @@
           <ul>
             <li>автоматичні звіти</li>
             <li>обробка заявок</li>
-            <li>інтеграція різних сервісів</li>
+            <li>інтеграція сервісів</li>
             <li>автоматичні сповіщення</li>
           </ul>
         </article>
@@ -492,39 +599,39 @@
             Це зменшує ризики та забезпечує прогнозований результат.
           </p>
           <div class="pill-row" style="margin-top:14px">
-            <span class="pill">🧪 Тестування сценаріїв</span>
+            <span class="pill">🧪 Тестування</span>
             <span class="pill">📍 Контроль помилок</span>
-            <span class="pill">📊 Прозорість даних</span>
+            <span class="pill">📊 Прозорість</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT / FORM ANCHOR -->
+  <!-- CONTACT / FORM -->
   <section class="section" id="form">
     <div class="container">
       <div class="contact">
         <div class="card">
           <h2 style="margin-top:0">Зв’язок</h2>
           <p class="lead" style="margin-bottom:10px;">
-            Мінімум полів — тільки головне. Натисніть кнопку, і форма відкриється в n8n.
+            Відправте заявку — і ми надішлемо підтвердження в Telegram на вказаний Chat ID.
           </p>
 
-          <!-- Мінімальний “псевдо-форм” блок (для UX), але відправка йде на n8n посилання -->
-          <div class="mini-form" aria-label="Основні дані">
-            <input class="field" type="text" placeholder="Ім’я (необов’язково)" />
-            <input class="field" type="text" placeholder="Контакт (телефон / email / Telegram)" />
-            <input class="field" type="text" placeholder="Коротко: що потрібно зробити?" />
-          </div>
+          <form id="contactForm" class="mini-form">
+            <input class="field" type="text" name="name" placeholder="Ваше ім’я" required>
+            <input class="field" type="text" name="tg_chat_id" placeholder="Telegram Chat ID (наприклад: 123456789)" required>
+            <textarea class="field" name="task" placeholder="Коротко опишіть задачу" rows="3" required></textarea>
 
-          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-            <a class="btn btn-primary" target="_blank" rel="noopener noreferrer"
-               href="https://n8n-bogdanm.up.railway.app/workflow/i0NvIv828aaQK6IW?projectId=BuwKN6q08vJSHCkb&uiContext=workflow_list">
-              🧾 Відкрити форму
-            </a>
-            <span class="note">* Посилання відкривається в новій вкладці.</span>
-          </div>
+            <button class="btn btn-primary" id="submitBtn" type="submit">
+              <span class="btn-label">📩 Відправити форму</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+
+            <div class="form-hint">
+              * Користувач повинен хоча б 1 раз написати вашому боту, щоб бот міг відповісти в особисті.
+            </div>
+          </form>
         </div>
 
         <div class="card">
@@ -541,23 +648,36 @@
     </div>
   </section>
 
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast__glass"></div>
+    <div class="toast__content">
+      <div class="toast__icon" id="toastIcon">✅</div>
+      <div class="toast__text">
+        <div class="toast__title" id="toastTitle">Готово</div>
+        <div class="toast__desc" id="toastDesc">Заявка відправлена.</div>
+      </div>
+      <button class="toast__close" type="button" id="toastClose" aria-label="Закрити">✕</button>
+    </div>
+    <div class="toast__bar"></div>
+  </div>
+
   <footer>
     <div class="container" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; align-items:center;">
       <div>© <span id="y"></span> BiG Dnipo. Усі права захищені.</div>
-      <!-- ✅ посилання на соцмережі прибрані повністю -->
     </div>
   </footer>
 
 </div>
 
 <script>
+  // Year
   document.getElementById('y').textContent = new Date().getFullYear();
 
   // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', (e)=>{
       const id = a.getAttribute('href');
-      if(!id || id.length < 2) return;
       const el = document.querySelector(id);
       if(!el) return;
       e.preventDefault();
@@ -565,6 +685,101 @@
       history.pushState(null, '', id);
     });
   });
+
+  // Toast helpers
+  const toast = document.getElementById("toast");
+  const toastClose = document.getElementById("toastClose");
+  const toastIcon = document.getElementById("toastIcon");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastDesc = document.getElementById("toastDesc");
+  const toastBar = toast.querySelector(".toast__bar");
+
+  let toastTimer = null;
+
+  function showToast({type="success", title="Готово", desc="Заявка відправлена.", duration=4500}){
+    clearTimeout(toastTimer);
+
+    toast.style.setProperty('--toastDur', duration + 'ms');
+    toast.classList.remove("is-error");
+    toastIcon.textContent = "✅";
+    if(type === "error"){
+      toast.classList.add("is-error");
+      toastIcon.textContent = "⚠️";
+    }
+
+    toastTitle.textContent = title;
+    toastDesc.textContent = desc;
+
+    // restart bar animation
+    toastBar.style.display = "none";
+    void toastBar.offsetHeight;
+    toastBar.style.display = "block";
+
+    toast.classList.add("show");
+    toastTimer = setTimeout(()=> toast.classList.remove("show"), duration);
+  }
+
+  toastClose?.addEventListener("click", ()=> toast.classList.remove("show"));
+
+  // Form submit via fetch (no reload)
+  const form = document.getElementById("contactForm");
+  const btn = document.getElementById("submitBtn");
+  const btnLabel = btn.querySelector(".btn-label");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Simple client validation for chat_id
+    const tg = String(form.querySelector('input[name="tg_chat_id"]').value || "").trim();
+    if(!/^-?\d{5,}$/.test(tg)){
+      showToast({
+        type: "error",
+        title: "Перевірте Chat ID",
+        desc: "Chat ID має бути числом (для груп може бути від’ємний).",
+        duration: 5200
+      });
+      return;
+    }
+
+    // Loading state
+    btn.classList.add("is-loading");
+    btnLabel.textContent = "⏳ Відправляється...";
+
+    const data = new FormData(form);
+
+    try{
+      const res = await fetch("https://n8n-bogdanm.up.railway.app/webhook/form", {
+        method: "POST",
+        body: data,
+      });
+
+      if(!res.ok){
+        throw new Error("HTTP " + res.status);
+      }
+
+      showToast({
+        type: "success",
+        title: "Заявка відправлена ✅",
+        desc: "Дані прийнято. Очікуйте повідомлення в Telegram.",
+        duration: 5200
+      });
+
+      form.reset();
+
+    }catch(err){
+      console.error(err);
+      showToast({
+        type: "error",
+        title: "Не відправлено",
+        desc: "Помилка відправки. Спробуйте ще раз або перевірте інтернет.",
+        duration: 6000
+      });
+    }finally{
+      btn.classList.remove("is-loading");
+      btnLabel.textContent = "📩 Відправити форму";
+    }
+  });
 </script>
+
 </body>
 </html>
